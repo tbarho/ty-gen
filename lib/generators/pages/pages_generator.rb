@@ -23,8 +23,8 @@ class PagesGenerator < Rails::Generators::Base
 
   def generate_pages_views
     empty_directory "app/views/pages"
-    copy_file "home.html.erb", "app/views/pages/home.html.erb"
-    copy_file "about.html.erb", "app/views/pages/about.html.erb"
+    template "home.html.erb", "app/views/pages/home.html.erb"
+    template "about.html.erb", "app/views/pages/about.html.erb"
   end
 
   def generate_pages_routes
@@ -33,17 +33,17 @@ class PagesGenerator < Rails::Generators::Base
   end
 
   def generate_pages_helpers
-    inject_into_class "app/helpers/application_helper.rb", <<-METHOD
-  # Return a title on a per-page basis
-  def title
-    base_title = "My New App"
-    if @title.nil?
-      base_title
-    else
-      "\#\{base_title\} | \#\{@title\}"
-    end
-  end 
-    METHOD
+    inject_into_class "app/helpers/application_helper.rb", ApplicationHelper do
+    "  # Return a title on a per-page basis"
+    "   def title"
+    "     base_title = \"My New App\""
+    "     if @title.nil?"
+    "       base_title"
+    "     else"
+    "       \"\#{base_title} | \#{@title}\""
+    "     end"
+    "   end"
+   end 
     copy_file "pages_helper.rb", "app/helpers/pages_helper.rb"
   end
 end
