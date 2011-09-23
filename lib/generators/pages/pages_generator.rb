@@ -2,7 +2,9 @@ class PagesGenerator < Rails::Generators::Base
   source_root File.expand_path('../templates', __FILE__)
 
   def setup_rspec
-    gem "rspec", :group => "development"
+    gem "rspec", :group => "test"
+    gem "webrat", :group => "test"
+    gem "rspec-rails", :group => "development"
     
     empty_directory "spec/"
     empty_directory "spec/controllers"
@@ -33,17 +35,23 @@ class PagesGenerator < Rails::Generators::Base
   end
 
   def generate_pages_helpers
-    inject_into_class "app/helpers/application_helper.rb", ApplicationHelper do
-    "  # Return a title on a per-page basis"
-    "   def title"
-    "     base_title = \"My New App\""
-    "     if @title.nil?"
-    "       base_title"
-    "     else"
-    "       \"\#{base_title} | \#{@title}\""
-    "     end"
-    "   end"
-   end 
+    title_method = <<eos
+\n
+  # Return a title on a per-page basis
+  def title
+    base_title = "My New App"
+    if @title.nil?
+      base_title
+    else
+      "\#{base_title} | \#{@title}"
+    end
+  end 
+eos
+    insert_into_file "app/helpers/application_helper.rb", title_method, :before => "\nend"
     copy_file "pages_helper.rb", "app/helpers/pages_helper.rb"
+  end
+
+  def remove_default_index
+    remove_file "public/index.html"
   end
 end
