@@ -27,6 +27,7 @@ class PagesGenerator < Rails::Generators::Base
     empty_directory "app/views/pages"
     template "home.html.erb", "app/views/pages/home.html.erb"
     template "about.html.erb", "app/views/pages/about.html.erb"
+    template "application.html.erb", "app/views/layouts/application.html.erb"
   end
 
   def generate_pages_routes
