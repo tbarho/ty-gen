@@ -26,7 +26,9 @@ class AuthenticationGenerator < Rails::Generators::Base
   end
 
   def generate_user_model
+    copy_file "20110926214624_create_users.rb", "db/migrate/20110926214624_create_users.rb"
     copy_file "user.rb", "app/models/user.rb"
+#    rake("db:migrate")
   end
 
   def generate_authentication_controllers
@@ -55,7 +57,17 @@ class AuthenticationGenerator < Rails::Generators::Base
 eos
     insert_into_file "spec/spec_helper.rb", spec_methods, :before => "\nend"
     # Add sessions helper to application controller    
-    insert_into_file "app/controllers/application_controller.rb", "  include SessionsHelper", :before => "\nend"
+    insert_into_file "app/controllers/application_controller.rb", "\n  include SessionsHelper", :before => "\nend"
+    # Add flash messages to application layout
+    flash_messages = <<eos
+\n
+<% flash.each do |key, value| %>
+  <%= content_tag(:div, value, :class => "flash \#{key}") %>
+<% end %>
+eos
+    insert_into_file "app/views/layouts/application.html.erb", flash_messages, :before => "\n<%= yield %>"
+    # Replace title in application layout
+    gsub_file 'app/views/layouts/application.html.erb', /<title>\S*<\/title>/, "<title><%= @title %></title>"
   end
 
   def generate_user_views

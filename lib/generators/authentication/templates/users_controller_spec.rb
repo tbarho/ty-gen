@@ -24,7 +24,7 @@ describe UsersController do
 
       it "should have the right title" do
         get :index
-        response.should have_selector(:title, :content => "Users > Index")
+        response.should have_selector(:title, :content => "Users - Index")
       end
     end
 
@@ -34,6 +34,7 @@ describe UsersController do
   describe "GET 'show'" do
     before(:each) do
       @user = Factory(:user)
+      test_sign_in(@user)
     end
 
     it "should be successful" do
@@ -48,7 +49,7 @@ describe UsersController do
 
     it "should have the right title" do
       get :show, :id => @user
-      response.should have_selector("title", :content => "User > Show")
+      response.should have_selector("title", :content => "Users - Show - #{@user.name}")
     end
   end
 

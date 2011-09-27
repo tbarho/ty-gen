@@ -1,0 +1,42 @@
+= Ty Generators
+
+A collection of generators I commonly use on new projects
+
+
+== Setup
+
+Add the gem to your Gemfile
+
+  gem "ty-gen", :group => :development
+
+== Available generators
+
+=== Pages
+
+Creates a pages controllers that easily allows you to add new "page" actions and templates, for semi-static pages
+
+  rails g pages
+
+=== Authentication
+
+Creates authentication model, controllers, views, helpers and tests based on the authentication provided in Rails 3 Tutorial
+
+  rails g authentication
+
+Once you've done that, run
+
+  bundle install
+
+then
+
+  rake db:migrate
+
+and
+
+  rake db:test:prepare
+
+to get your gems and databases ready.  You can then run
+
+  rspec .
+
+to ensure your tests are passing.

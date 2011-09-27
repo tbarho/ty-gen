@@ -51,7 +51,7 @@ describe "Users" do
         user = Factory(:user)
         integration_sign_in(user)
         controller.should be_signed_in
-        click_link "Sign out"
+        visit signout_path
         controller.should_not be_signed_in
       end
     end
